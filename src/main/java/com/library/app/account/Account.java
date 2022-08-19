@@ -1,4 +1,4 @@
-package com.library.app;
+package com.library.app.account;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
