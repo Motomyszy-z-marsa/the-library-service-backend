@@ -18,6 +18,12 @@ target/
 *.iws
 *.iml
 *.ipr
+src/main/resources/selfsigned-cert.crt.gpg
+src/main/resources/selfsigned-cert.crt
+src/main/resources/selfsigned.p12
+src/main/resources/keystore.jks
+src/main/resources/application.properties
+
 
 ### NetBeans ###
 /nbproject/private/
