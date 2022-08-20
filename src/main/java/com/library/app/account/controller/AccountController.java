@@ -1,9 +1,8 @@
 package com.library.app.account.controller;
 
-import com.library.app.account.repository.AccountRepository;
 import com.library.app.account.dto.AccountDto;
+import com.library.app.account.repository.AccountRepository;
 import com.library.app.account.service.AccountService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +26,7 @@ final class AccountController {
     
     @GetMapping
     public ResponseEntity<List<AccountDto>> getAccounts() {
-        return new ResponseEntity<>(accountService.getAllAccounts(), HttpStatus.FOUND);
+        return new ResponseEntity<>(accountService.getAllAccounts(), HttpStatus.ACCEPTED);
     }
     
     @GetMapping("/{id}")

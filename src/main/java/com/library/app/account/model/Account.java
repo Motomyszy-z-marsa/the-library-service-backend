@@ -1,4 +1,4 @@
-package com.library.app.account;
+package com.library.app.account.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

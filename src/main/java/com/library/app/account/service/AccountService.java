@@ -1,8 +1,8 @@
 package com.library.app.account.service;
 
-import com.library.app.account.Account;
 import com.library.app.account.dto.AccountDto;
 import com.library.app.account.mapper.AccountMapper;
+import com.library.app.account.model.Account;
 import com.library.app.account.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
