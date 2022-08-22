@@ -2,6 +2,7 @@ package com.library.app.employee.mapper;
 
 import com.library.app.employee.dto.EmployeeDto;
 import com.library.app.employee.model.Employee;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,22 +10,14 @@ import java.util.List;
 @Service
 public class EmployeeMapper {
     
-    public Employee toEmployee(EmployeeDto employeeDto) {
-        return new Employee(
-                employeeDto.getEmployeeId(),
-                employeeDto.getFirstname(),
-                employeeDto.getLastname(),
-                employeeDto.getPersonalNumber()
-        );
-    }
+    private final ModelMapper mapper = new ModelMapper();
     
     public EmployeeDto toEmployeeDto(Employee employee) {
-        return new EmployeeDto(
-                employee.getId(),
-                employee.getFirstname(),
-                employee.getLastname(),
-                employee.getPersonalNumber()
-        );
+        return mapper.map(employee, EmployeeDto.class);
+    }
+    
+    public Employee toEmployee(EmployeeDto employeeDto) {
+        return mapper.map(employeeDto, Employee.class);
     }
     
     public List<Employee> toList(List<EmployeeDto> employeeDtos) {

@@ -2,6 +2,7 @@ package com.library.app.account.mapper;
 
 import com.library.app.account.dto.AccountDto;
 import com.library.app.account.model.Account;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,20 +10,14 @@ import java.util.List;
 @Service
 public class AccountMapper {
     
+    private final ModelMapper mapper = new ModelMapper();
+    
     public AccountDto toAccountDto(Account account) {
-        return new AccountDto(
-                account.getId(),
-                account.getLogin(),
-                account.getPassword()
-        );
+        return mapper.map(account, AccountDto.class);
     }
     
     public Account toAccount(AccountDto accountDto) {
-        return new Account(
-                accountDto.getUserId(),
-                accountDto.getLogin(),
-                accountDto.getPassword()
-        );
+        return mapper.map(accountDto, Account.class);
     }
     
     public List<AccountDto> toDtoList(List<Account> accounts) {
