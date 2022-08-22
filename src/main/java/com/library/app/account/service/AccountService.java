@@ -4,6 +4,7 @@ import com.library.app.account.dto.AccountDto;
 import com.library.app.account.mapper.AccountMapper;
 import com.library.app.account.model.Account;
 import com.library.app.account.repository.AccountRepository;
+import com.library.app.exception.NoResourceFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +31,13 @@ public class AccountService {
         final Account saved = accountRepository.save(account);
         
         return accountMapper.toAccountDto(saved);
+    }
+    
+    public void remove(Long id) throws NoResourceFoundException {
+        if (accountRepository.existsById(id)) {
+            accountRepository.deleteById(id);
+        } else {
+            throw new NoResourceFoundException("No account with id: " + id + " found.");
+        }
     }
 }

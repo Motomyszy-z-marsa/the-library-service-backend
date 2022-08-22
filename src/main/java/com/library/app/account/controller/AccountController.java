@@ -3,6 +3,7 @@ package com.library.app.account.controller;
 import com.library.app.account.dto.AccountDto;
 import com.library.app.account.repository.AccountRepository;
 import com.library.app.account.service.AccountService;
+import com.library.app.exception.NoResourceFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,5 +33,11 @@ final class AccountController {
     @GetMapping("/{id}")
     public ResponseEntity<AccountDto> getAccountById(@PathVariable Long id) {
         return new ResponseEntity<>(accountService.getAccountById(id), HttpStatus.FOUND);
+    }
+    
+    @DeleteMapping("/{id}") // TODO: 22.08.2022 Handle exception when resource is already gone
+    public ResponseEntity<AccountDto> removeAccount(@PathVariable Long id) throws NoResourceFoundException {
+        accountService.remove(id);
+        return new ResponseEntity<>(HttpStatus.GONE);
     }
 }
