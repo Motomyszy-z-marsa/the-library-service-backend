@@ -1,9 +1,6 @@
 package com.library.app.account.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,11 +15,13 @@ import javax.persistence.Id;
 public class Account {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    private String login;
+    @NonNull
+    private String username;
     
+    @NonNull
     private String password;
     
 }

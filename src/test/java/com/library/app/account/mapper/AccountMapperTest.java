@@ -25,7 +25,7 @@ class AccountMapperTest {
         //then
         assertAll(
                 () -> assertEquals(1L, accountDto.getId()),
-                () -> assertEquals("Login", accountDto.getLogin()),
+                () -> assertEquals("Login", accountDto.getUsername()),
                 () -> assertEquals("password", accountDto.getPassword())
         );
     }
@@ -41,7 +41,7 @@ class AccountMapperTest {
         //then
         assertAll(
                 () -> assertEquals(2L, account.getId()),
-                () -> assertEquals("marcello007", account.getLogin()),
+                () -> assertEquals("marcello007", account.getUsername()),
                 () -> assertEquals("marcell", account.getPassword())
         );
     }
@@ -61,7 +61,7 @@ class AccountMapperTest {
         //then
         assertAll(
                 () -> assertEquals(2, dtos.size()),
-                () -> assertEquals("login1", dtos.get(0).getLogin()),
+                () -> assertEquals("login1", dtos.get(0).getUsername()),
                 () -> assertEquals("password2", dtos.get(1).getPassword())
         );
         
@@ -83,7 +83,7 @@ class AccountMapperTest {
         assertAll(
                 () -> assertEquals(2, accounts.size()),
                 () -> assertEquals(1L, accounts.get(0).getId()),
-                () -> assertEquals("login2", accounts.get(1).getLogin())
+                () -> assertEquals("login2", accounts.get(1).getUsername())
         );
     }
 }
