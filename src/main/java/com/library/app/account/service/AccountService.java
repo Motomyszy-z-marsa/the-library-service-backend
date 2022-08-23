@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,8 +20,7 @@ public class AccountService {
     @Autowired
     private AccountMapper accountMapper;
     
-    @Transactional
-    public ResponseEntity<List<AccountDto>> getAccountsAsList() {
+    public ResponseEntity<List<AccountDto>> getAsList() {
         if (!accountMapper.toDtoList(accountRepository.findAll()).isEmpty()) {
             return new ResponseEntity<>(accountMapper.toDtoList(accountRepository.findAll()), HttpStatus.OK);
         } else {
@@ -30,7 +28,7 @@ public class AccountService {
         }
     }
     
-    public ResponseEntity<AccountDto> getAccountById(final Long id) {
+    public ResponseEntity<AccountDto> getById(final Long id) {
         if (accountRepository.existsById(id)) {
             return new ResponseEntity<>(accountMapper.toAccountDto(accountRepository.getReferenceById(id)), HttpStatus.FOUND);
         } else {
@@ -38,20 +36,19 @@ public class AccountService {
         }
     }
     
-    public ResponseEntity<AccountDto> createNewAccount(final AccountDto accountDto) {
+    public ResponseEntity<AccountDto> create(final AccountDto accountDto) {
         final Optional<Account> userFromDb = accountRepository.findByUsername(accountDto.getUsername());
         
         if (userFromDb.isPresent()) {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         } else {
-            final Account account = accountMapper.toAccount(accountDto);
-            final Account saved = accountRepository.save(account);
+            final Account saved = accountRepository.save(accountMapper.toAccount(accountDto));
             
             return new ResponseEntity<>(accountMapper.toAccountDto(saved), HttpStatus.OK);
         }
     }
     
-    public ResponseEntity<Void> removeAccount(Long id) {
+    public ResponseEntity<Void> remove(Long id) {
         if (accountRepository.existsById(id)) {
             accountRepository.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

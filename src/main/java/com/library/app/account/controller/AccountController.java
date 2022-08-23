@@ -20,21 +20,21 @@ final class AccountController {
     
     @PostMapping
     public ResponseEntity<AccountDto> createAccount(@RequestBody AccountDto accountDto) {
-        return accountService.createNewAccount(accountDto);
+        return accountService.create(accountDto);
     }
     
     @GetMapping
-    public ResponseEntity<List<AccountDto>> getAccounts() {
-        return accountService.getAccountsAsList();
+    public ResponseEntity<List<AccountDto>> getAccountsAsList() {
+        return accountService.getAsList();
     }
     
     @GetMapping("/{id}")
     public ResponseEntity<AccountDto> getAccountById(@PathVariable Long id) {
-        return accountService.getAccountById(id);
+        return accountService.getById(id);
     }
     
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> removeAccount(@PathVariable Long id) {
-        return accountService.removeAccount(id);
+        return accountService.remove(id);
     }
 }
