@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/account")
-@CrossOrigin("http://localhost:3000")
+//@CrossOrigin("http://localhost:3000")
 final class AccountController {
     
     private final AccountService accountService;
