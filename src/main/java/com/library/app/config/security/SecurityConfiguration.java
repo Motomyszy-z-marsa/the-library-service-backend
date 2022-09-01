@@ -6,21 +6,19 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+
 @Configuration
 public class SecurityConfiguration {
     
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//
-//        http
-//                .requestMatchers()
-//                .antMatchers("/api/**", "/swagger-ui/index.html#/")
-//                .and()
-//                .cors();
-//        http.headers().frameOptions().sameOrigin();
-//
-//        return http.build();
-//    }
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                .antMatchers("*/*")
+                .permitAll();
+  
+        return http.build();
+    }
     
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {

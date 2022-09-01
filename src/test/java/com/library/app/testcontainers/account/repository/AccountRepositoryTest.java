@@ -42,5 +42,8 @@ class AccountRepositoryTest extends AbstractTest {
         //then
         assertThat(accounts).hasSize(2);
         Assertions.assertEquals("username", accounts.get(0).getUsername());
+        
+        //cleanup
+        accountRepository.deleteAll();
     }
 }

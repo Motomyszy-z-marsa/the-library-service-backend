@@ -1,8 +1,10 @@
 package com.library.app.testcontainers.employee.repository;
 
 import com.library.app.AbstractTest;
+import com.library.app.account.model.Account;
 import com.library.app.employee.model.Employee;
 import com.library.app.employee.repository.EmployeeRepository;
+import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,5 +50,8 @@ class EmployeeRepositoryTest extends AbstractTest {
                 () -> assertEquals("Mary", employees.get(1).getFirstname()),
                 () -> assertThat(employees).hasSize(2)
         );
+        
+        //cleanup
+        employeeRepository.deleteAll();
     }
 }
