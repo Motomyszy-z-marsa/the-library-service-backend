@@ -13,7 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @AllArgsConstructor
-@EnableWebSecurity
+//@EnableWebSecurity
 public class SecurityConfiguration {
     
     
@@ -24,10 +24,10 @@ public class SecurityConfiguration {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/**", "/api/registration/**")
+                .antMatchers("/**")
                 .permitAll();
-    
-        http.authenticationProvider(daoAuthenticationProvider());
+        
+//        http.authenticationProvider(daoAuthenticationProvider());
         
         return http.build();
     }
