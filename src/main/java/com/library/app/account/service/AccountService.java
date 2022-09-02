@@ -4,21 +4,37 @@ import com.library.app.account.dto.AccountDto;
 import com.library.app.account.mapper.AccountMapper;
 import com.library.app.account.model.Account;
 import com.library.app.account.repository.AccountRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AccountService {
+@AllArgsConstructor
+public class AccountService implements UserDetailsService {
     
-    @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
-    private AccountMapper accountMapper;
+    
+    private final static String ACCOUNT_NOT_FOUND = "Account with email %s not found";
+    private final AccountRepository accountRepository;
+    private final AccountMapper accountMapper;
+    
+    
+    @Override
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+        return accountRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format(ACCOUNT_NOT_FOUND, username)));
+    }
+    
+    public AccountDto signUpAccount(final AccountDto accountdto) {
+        final Account saved = accountRepository.save(accountMapper.toAccount(accountdto));
+        return accountMapper.toAccountDto(saved);
+    }
     
     public ResponseEntity<List<AccountDto>> getAsList() {
         if (!accountMapper.toDtoList(accountRepository.findAll()).isEmpty()) {

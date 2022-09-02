@@ -1,6 +1,5 @@
 package com.library.app;
 
-import com.library.app.config.loader.DataLoader;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

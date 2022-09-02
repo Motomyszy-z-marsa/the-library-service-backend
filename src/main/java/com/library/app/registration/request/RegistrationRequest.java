@@ -1,14 +1,16 @@
-package com.library.app.account.dto;
+package com.library.app.registration.request;
 
 import com.library.app.account.role.AccountRole;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
 @Getter
-@Setter
-@EqualsAndHashCode
 @AllArgsConstructor
-@NoArgsConstructor
-public class AccountDto {
+@EqualsAndHashCode
+@ToString
+public class RegistrationRequest {
     
     private Long id;
     private String username;
@@ -18,4 +20,5 @@ public class AccountDto {
     private boolean locked;
     private boolean enabled;
 }
+
 

@@ -2,6 +2,7 @@ package com.library.app.account.controller;
 
 import com.library.app.account.dto.AccountDto;
 import com.library.app.account.service.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,7 @@ import java.util.List;
 //@CrossOrigin("http://localhost:3000")
 final class AccountController {
     
+    @Autowired
     private final AccountService accountService;
     
     private AccountController(final AccountService accountService) {
