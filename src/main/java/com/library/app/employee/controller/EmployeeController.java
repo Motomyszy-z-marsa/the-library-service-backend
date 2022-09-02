@@ -2,7 +2,7 @@ package com.library.app.employee.controller;
 
 import com.library.app.employee.dto.EmployeeDto;
 import com.library.app.employee.service.EmployeeService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,14 +11,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/employee")
 //@CrossOrigin("http://localhost:3000")
+@RequiredArgsConstructor
 public class EmployeeController {
     
-    @Autowired
     private final EmployeeService employeeService;
-    
-    public EmployeeController(final EmployeeService employeeService) {
-        this.employeeService = employeeService;
-    }
     
     @GetMapping
     public ResponseEntity<List<EmployeeDto>> getEmployeesAsList() {
