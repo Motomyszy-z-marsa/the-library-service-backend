@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class AccountService implements UserDetailsService {
     private final static String ACCOUNT_NOT_FOUND = "Account with email %s not found";
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     
     
     @Override
@@ -32,8 +34,21 @@ public class AccountService implements UserDetailsService {
     }
     
     public AccountDto signUpAccount(final AccountDto accountdto) {
-        final Account saved = accountRepository.save(accountMapper.toAccount(accountdto));
-        return accountMapper.toAccountDto(saved);
+        boolean accountExists = accountRepository.findByEmail(accountdto.getEmail()).isPresent();
+        
+        if (accountExists) {
+            throw new IllegalStateException("Email already taken.");
+        }
+        
+        final String encodedPassword = bCryptPasswordEncoder.encode(accountdto.getPassword());
+        
+        final Account account = accountMapper.toAccount(accountdto);
+        account.setPassword(encodedPassword);
+    
+        accountRepository.save(account);
+        
+        // TODO: 02.09.2022 send confirmation TOKEN
+        return accountMapper.toAccountDto(account);
     }
     
     public ResponseEntity<List<AccountDto>> getAsList() {

@@ -1,7 +1,6 @@
 package com.library.app.registration.service;
 
 import com.library.app.account.dto.AccountDto;
-import com.library.app.account.model.Account;
 import com.library.app.account.repository.AccountRepository;
 import com.library.app.account.service.AccountService;
 import com.library.app.registration.request.RegistrationRequest;
@@ -21,9 +20,13 @@ public class RegistrationService {
     
     public ResponseEntity<AccountDto> register(RegistrationRequest request) {
         boolean isValidEmail = emailValidator.test(request.getEmail());
+        boolean isPresentEmail = accountRepository.findByEmail(request.getEmail()).isPresent();
+        
         
         if (!isValidEmail) {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        } else if (isPresentEmail) {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         } else {
             return new ResponseEntity<>(accountService.signUpAccount(new AccountDto(
                     request.getId(),
@@ -33,7 +36,7 @@ public class RegistrationService {
                     request.getAccountRole(),
                     request.isLocked(),
                     request.isEnabled()
-            )), HttpStatus.OK);
+            )), HttpStatus.CREATED);
         }
     }
 }

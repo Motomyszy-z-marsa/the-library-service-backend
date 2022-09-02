@@ -1,8 +1,6 @@
 package com.library.app.registration.validation.email;
 
-import com.library.app.account.repository.AccountRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.function.Predicate;
@@ -12,9 +10,6 @@ import java.util.regex.Pattern;
 @Service
 @AllArgsConstructor
 public class EmailValidator implements Predicate<String> {
-    
-    @Autowired
-    private final AccountRepository accountRepository;
     
     @Override
     public boolean test(String email) {
@@ -30,7 +25,6 @@ public class EmailValidator implements Predicate<String> {
                         "[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]" +
                         "|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])");
         Matcher matcher = pattern.matcher(email);
-        
         return matcher.find();
     }
 }
