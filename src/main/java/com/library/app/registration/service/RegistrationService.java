@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+
 @Service
 @AllArgsConstructor
 public class RegistrationService {
@@ -30,10 +32,12 @@ public class RegistrationService {
         } else {
             return new ResponseEntity<>(accountService.signUpAccount(new AccountDto(
                     request.getId(),
+                    request.getFirstname(),
+                    request.getLastname(),
                     request.getUsername(),
                     request.getEmail(),
                     request.getPassword(),
-                    request.getAccountRole(),
+                    request.getRole(),
                     request.isLocked(),
                     request.isEnabled()
             )), HttpStatus.CREATED);

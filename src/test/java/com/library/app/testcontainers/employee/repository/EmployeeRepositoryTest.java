@@ -1,12 +1,10 @@
 package com.library.app.testcontainers.employee.repository;
 
 import com.library.app.AbstractTest;
-import com.library.app.account.model.Account;
 import com.library.app.employee.model.Employee;
 import com.library.app.employee.repository.EmployeeRepository;
-import lombok.val;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
@@ -16,9 +14,9 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@RequiredArgsConstructor
 class EmployeeRepositoryTest extends AbstractTest {
     
-    @Autowired
     private EmployeeRepository employeeRepository;
     
     @Test
