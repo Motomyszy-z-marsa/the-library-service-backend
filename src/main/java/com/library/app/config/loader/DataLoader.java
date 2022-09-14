@@ -10,8 +10,6 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import static java.util.Collections.singleton;
-
 @Component
 @RequiredArgsConstructor
 class DataLoader implements ApplicationRunner {
@@ -20,10 +18,10 @@ class DataLoader implements ApplicationRunner {
     private final EmployeeRepository employeeRepository;
     
     public void run(ApplicationArguments args) {
-        accountRepository.save(new Account(1L, "John", "Travolta", "johnyy", "test@test.com", "password", singleton(new Role(4L, "ADMIN")), false, true));
-        accountRepository.save(new Account(2L, "Philadelphia", "Cocky", "theuberuser", "test@test.eu", "randomshiet", singleton(new Role(3L, "EMPLOYEE")), false, true));
-        accountRepository.save(new Account(3L, "Becky", "brown", "brownie", "monkey@monkey.pl", "morerandom", singleton(new Role(2L, "MEMBER")), false, true));
-        accountRepository.save(new Account(4L, "Suzan", "McKinley", "suzyyy300", "sheep@sheep.eu", "nullshiet", singleton(new Role(1L, "ADMIN")), false, true));
+        accountRepository.save(new Account(1L, "John", "Travolta", "test@test.com", "password", Role.ADMIN, false));
+        accountRepository.save(new Account(2L, "Jacob", "theuberuser", "test@test.eu", "password123", Role.EMPLOYEE, false));
+        accountRepository.save(new Account(3L, "Steven", "brown", "monkey@monkey.pl", "morerandom", Role.EMPLOYEE, false));
+        accountRepository.save(new Account(4L, "Mary", "McKinley", "sheep@sheep.eu", "nullshiet", Role.MEMBER, false));
         
         employeeRepository.save(new Employee(1L, "Jacek", "Mrzonka", 1024L));
         employeeRepository.save(new Employee(2L, "Korwin", "Parufka", 3L));

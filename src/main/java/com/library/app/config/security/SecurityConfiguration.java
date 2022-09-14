@@ -1,41 +1,37 @@
 package com.library.app.config.security;
 
-import com.library.app.account.service.AccountService;
-import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 
-@Configuration
-@AllArgsConstructor
+@EnableWebSecurity(debug = true)
 public class SecurityConfiguration {
     
+    private static final String[] WHITE_LIST_URL = {
+            "/error",
+            "/api/hello",
+            "/api/register/**",
+            "/api/account/**"
+    };
     
-//    private final AccountService accountService;
     
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/**")
-                .permitAll();
-        
-//        http.authenticationProvider(daoAuthenticationProvider());
-        
-        return http.build();
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(15);
     }
     
-//    public DaoAuthenticationProvider daoAuthenticationProvider() {
-//        return new DaoAuthenticationProvider();
-//    }
-    
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .cors().disable()
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers(WHITE_LIST_URL).permitAll();
+        
+        return http.build();
     }
 }
