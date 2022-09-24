@@ -15,7 +15,8 @@ public class SecurityConfiguration {
             "/error",
             "/api/hello",
             "/api/register/**",
-            "/api/account/**"
+            "/v3/api-docs/**",
+            "/swagger-ui/**"
     };
     
     
