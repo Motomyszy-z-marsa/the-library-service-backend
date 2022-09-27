@@ -16,7 +16,9 @@ public class SecurityConfiguration {
             "/api/hello",
             "/api/register/**",
             "/v3/api-docs/**",
-            "/swagger-ui/**"
+            "/swagger-ui/**",
+            "/verifyRegistration",
+            "/resendVerificationToken"
     };
     
     

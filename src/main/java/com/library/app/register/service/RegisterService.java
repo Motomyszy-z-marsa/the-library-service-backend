@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -49,5 +50,13 @@ public class RegisterService {
         account.setEnabled(true);
         accountRepository.save(account);
         return "valid";
+    }
+    
+    public VerificationToken generateNewVerificationToken(final String oldToken) {
+        VerificationToken verificationToken = verificationTokenRepository.findByToken(oldToken);
+        verificationToken.setToken(UUID.randomUUID().toString());
+        verificationTokenRepository.save(verificationToken);
+        
+        return verificationToken;
     }
 }
