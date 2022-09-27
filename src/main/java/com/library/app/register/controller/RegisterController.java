@@ -2,6 +2,7 @@ package com.library.app.register.controller;
 
 import com.library.app.account.model.Account;
 import com.library.app.register.event.RegistrationCompleteEvent;
+import com.library.app.register.password.Password;
 import com.library.app.register.service.RegisterService;
 import com.library.app.register.token.VerificationToken;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController("/api")
 @RequiredArgsConstructor
@@ -50,10 +53,45 @@ public class RegisterController {
         String url = applicationUrl +
                 "verifyRegistration?token="
                 + verificationToken.getToken();
-    
+        
         // TODO: 27.09.2022 The token have same expiration date - to be fixed
         // TODO: 25.09.2022 Send an actual email.
         log.info("Click the link to verify your account: {}", url);
+    }
+    
+    @PostMapping("/resetPassword")
+    public String resetPassword(@RequestBody Password password, HttpServletRequest request) {
+        Account account = registerService.findAccountByEmail(password.getEmail());
+        String url = "";
+        if (account != null) {
+            String token = UUID.randomUUID().toString();
+            registerService.createPasswordResetTokenForAccount(account, token);
+            url = passwordResetTokenMail(account, applicationUrl(request), token);
+        }
+        return url;
+    }
+    
+    private String passwordResetTokenMail(final Account account, final String applicationUrl, final String token) {
+        String url = applicationUrl + "savePassword?token=" + token;
+        
+        log.info("Click the link to reset your password: {}", url);
+        
+        return url;
+    }
+    
+    @PostMapping("/savePassword")
+    public String savePassword(@RequestParam("token") String token, @RequestBody Password password) {
+        String result = registerService.validatePasswordResetToken(token);
+        if (!result.equalsIgnoreCase("valid")) {
+            return "Invalid Token";
+        }
+        Optional<Account> account = registerService.getAccountByPasswordResetToken(token);
+        if (account.isPresent()) {
+            registerService.changePassword(account.get(), password.getNewPassword());
+            return "Password reset successfully.";
+        } else {
+            return "Invalid token";
+        }
     }
     
     private String applicationUrl(final HttpServletRequest request) {

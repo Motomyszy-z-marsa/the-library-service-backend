@@ -18,7 +18,8 @@ public class SecurityConfiguration {
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/verifyRegistration",
-            "/resendVerificationToken"
+            "/resendVerificationToken",
+            "/resetPassword"
     };
     
     
