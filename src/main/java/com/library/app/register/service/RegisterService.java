@@ -97,4 +97,8 @@ public class RegisterService {
         account.setPassword(passwordEncoder.encode(newPassword));
         accountRepository.save(account);
     }
+    
+    public boolean checkIfValidOldPassword(final Account account, final String oldPassword) {
+        return passwordEncoder.matches(oldPassword, account.getPassword());
+    }
 }
