@@ -1,6 +1,7 @@
 package com.library.app.register.controller;
 
 import com.library.app.account.model.Account;
+import com.library.app.register.errors.BadTokenException;
 import com.library.app.register.event.RegistrationCompleteEvent;
 import com.library.app.register.password.Password;
 import com.library.app.register.service.RegisterService;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
@@ -22,10 +24,11 @@ public class RegisterController {
     private final RegisterService registerService;
     
     private final ApplicationEventPublisher publisher;
+    private ResponseEntityExceptionHandler responseEntityExceptionHandler;
     
     
     @PostMapping("/register")
-    public String registerUser(@RequestBody Account model, final HttpServletRequest request) {
+    public String registerUser(@RequestBody final Account model, final HttpServletRequest request) {
         Account account = registerService.registerAccount(model);
         publisher.publishEvent(new RegistrationCompleteEvent(account, applicationUrl(request)));
         return "Success";
@@ -37,7 +40,7 @@ public class RegisterController {
         if (result.equalsIgnoreCase("valid")) {
             return "Account verification is successful.";
         }
-        return "Bad token";
+        throw new BadTokenException();
     }
     
     @GetMapping("/resendVerificationToken")
@@ -47,6 +50,7 @@ public class RegisterController {
         Account account = verificationToken.getAccount();
         resendVerificationTokenMail(account, applicationUrl(request), verificationToken);
         return "Verification link sent.";
+        //// TODO: 29.09.2022 handle exception of "verification token" while null
     }
     
     private void resendVerificationTokenMail(final Account account, final String applicationUrl, final VerificationToken verificationToken) {
@@ -54,7 +58,7 @@ public class RegisterController {
                 "verifyRegistration?token="
                 + verificationToken.getToken();
         
-        // TODO: 27.09.2022 The token have same expiration date - to be fixed
+        // TODO: 27.09.2022 The token have same expiration date - fix
         // TODO: 25.09.2022 Send an actual email.
         log.info("Click the link to verify your account: {}", url);
     }
