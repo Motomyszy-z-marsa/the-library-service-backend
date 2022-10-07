@@ -1,7 +1,9 @@
 package com.library.app.account.role;
 
-public enum AccountRole {
+public enum Role {
+    
     ADMIN,
     EMPLOYEE,
     MEMBER
+    
 }

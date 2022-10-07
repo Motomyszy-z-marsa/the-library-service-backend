@@ -1,8 +1,8 @@
 package com.library.app.testcontainers.account.repository;
 
+import com.library.app.AbstractTest;
 import com.library.app.account.model.Account;
 import com.library.app.account.repository.AccountRepository;
-import com.library.app.AbstractTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ class AccountRepositoryTest extends AbstractTest {
         //given
         Account account1 = Account.builder()
                 .id(1L)
-                .username("username")
+                .username("John")
                 .password("password")
                 .build();
         
@@ -41,7 +41,7 @@ class AccountRepositoryTest extends AbstractTest {
         
         //then
         assertThat(accounts).hasSize(2);
-        Assertions.assertEquals("username", accounts.get(0).getUsername());
+        Assertions.assertEquals("John", accounts.get(0).getUsername());
         
         //cleanup
         accountRepository.deleteAll();
