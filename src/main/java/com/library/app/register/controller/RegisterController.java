@@ -16,7 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 import java.util.UUID;
 
-@RestController("/api")
+@RestController
+@RequestMapping("/api")
 @RequiredArgsConstructor
 @Slf4j
 public class RegisterController {
@@ -24,7 +25,7 @@ public class RegisterController {
     private final RegisterService registerService;
     
     private final ApplicationEventPublisher publisher;
-    private ResponseEntityExceptionHandler responseEntityExceptionHandler;
+    private final ResponseEntityExceptionHandler responseEntityExceptionHandler;
     
     
     @PostMapping("/register")
@@ -45,12 +46,17 @@ public class RegisterController {
     
     @GetMapping("/resendVerificationToken")
     public String resendVerificationToken(@RequestParam("token") String oldToken, HttpServletRequest request) {
-        VerificationToken verificationToken =
-                registerService.generateNewVerificationToken(oldToken);
-        Account account = verificationToken.getAccount();
-        resendVerificationTokenMail(account, applicationUrl(request), verificationToken);
-        return "Verification link sent.";
-        //// TODO: 29.09.2022 handle exception of "verification token" while null
+        try {
+            VerificationToken verificationToken =
+                    registerService.generateNewVerificationToken(oldToken);
+            Account account = verificationToken.getAccount();
+            resendVerificationTokenMail(account, applicationUrl(request), verificationToken);
+            return "Verification link sent.";
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        log.info("Wrong old token value: [" + oldToken + "]");
+        throw new BadTokenException();
     }
     
     private void resendVerificationTokenMail(final Account account, final String applicationUrl, final VerificationToken verificationToken) {
@@ -112,12 +118,7 @@ public class RegisterController {
     private String applicationUrl(final HttpServletRequest request) {
         return "http://" +
                 request.getServerName() + ":" +
-                request.getServerPort() + "/" +
+                request.getServerPort() + "/api/" +
                 request.getContextPath();
-    }
-    
-    @GetMapping("/hello")
-    public String hello() {
-        return "Hello World";
     }
 }
