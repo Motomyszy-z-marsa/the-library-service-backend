@@ -12,17 +12,17 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AccountMapperTest {
-    
+
     private final AccountMapper accountMapper = new AccountMapper();
-    
+
     @Test
     void shouldMapAccountToAccountDto() {
         //given
         final Account underTest = new Account(1L, "Login", "email", "password", AccountRole.ADMIN, false, true);
-        
+
         //when
         AccountDto accountDto = accountMapper.toAccountDto(underTest);
-        
+
         //then
         assertAll(
                 () -> assertEquals(1L, accountDto.getId()),
@@ -30,15 +30,15 @@ class AccountMapperTest {
                 () -> assertEquals("password", accountDto.getPassword())
         );
     }
-    
+
     @Test
     void shouldMapAccountDtoToAccount() {
         //given
-        final AccountDto underTest = new AccountDto(2L, "marcello007", "test@test.com", "marcell", false, true);
-        
+        final AccountDto underTest = new AccountDto(2L, "marcello007", "test@test.com", "marcell", AccountRole.MEMBER, false, true);
+
         //when
         final Account account = accountMapper.toAccount(underTest);
-        
+
         //then
         assertAll(
                 () -> assertEquals(2L, account.getId()),
@@ -46,7 +46,7 @@ class AccountMapperTest {
                 () -> assertEquals("marcell", account.getPassword())
         );
     }
-    
+
     @Test
     void shouldMapAccountListToAccountDtoList() {
         //given
@@ -55,31 +55,31 @@ class AccountMapperTest {
         final Account login2 = new Account(2L, "login2", "email", "password2", AccountRole.ADMIN, false, true);
         underTestList.add(login1);
         underTestList.add(login2);
-        
+
         //when
         final List<AccountDto> dtos = accountMapper.toDtoList(underTestList);
-        
+
         //then
         assertAll(
                 () -> assertEquals(2, dtos.size()),
                 () -> assertEquals("login1", dtos.get(0).getUsername()),
                 () -> assertEquals("password2", dtos.get(1).getPassword())
         );
-        
+
     }
-    
+
     @Test
     void shouldMapAccountDtoListToAccountList() {
         //given
         final List<AccountDto> underTestDtoList = new ArrayList<>();
-        final AccountDto login1 = new AccountDto(1L, "login1", "test@yo.com", "password1", false, true);
-        final AccountDto login2 = new AccountDto(2L, "login2", "test@yo.com", "password2", false, true);
+        final AccountDto login1 = new AccountDto(1L, "login1", "test@yo.com", "password1", AccountRole.MEMBER,false, true);
+        final AccountDto login2 = new AccountDto(2L, "login2", "test@yo.com", "password2", AccountRole.MEMBER,false, true);
         underTestDtoList.add(login1);
         underTestDtoList.add(login2);
-        
+
         //when
         final List<Account> accounts = accountMapper.toList(underTestDtoList);
-        
+
         //then
         assertAll(
                 () -> assertEquals(2, accounts.size()),
